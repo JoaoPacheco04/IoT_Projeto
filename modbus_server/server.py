@@ -8,7 +8,7 @@ import time
 from dataclasses import dataclass, field
 from enum import IntEnum
 
-from pymodbus.datastore import ModbusSequentialDataBlock, ModbusServerContext, ModbusSlaveContext
+from pymodbus.datastore import ModbusDeviceContext, ModbusSequentialDataBlock, ModbusServerContext
 from pymodbus.server import StartTcpServer
 
 
@@ -220,8 +220,8 @@ def simulation_loop(context: ModbusServerContext, machine: MachineSimulator) -> 
 
 def main() -> None:
     block = ModbusSequentialDataBlock(0, [0] * 16)
-    store = ModbusSlaveContext(hr=block)
-    context = ModbusServerContext(slaves=store, single=True)
+    store = ModbusDeviceContext(hr=block)
+    context = ModbusServerContext(devices=store, single=True)
 
     machine = MachineSimulator()
     thread = threading.Thread(target=simulation_loop, args=(context, machine), daemon=True)
